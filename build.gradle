@@ -1,0 +1,46 @@
+apply plugin: 'maven'
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+
+//groupId 为包名，artifactId 在引用插件时导入classpath时需要用到
+group 'org.hzl.gradle-plugin'
+version '1.0.0'
+
+repositories{
+    google()
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+buildscript {
+    repositories{
+        google()
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+    }
+}
+//uploadArchives 类型是upload，这个task不是'maven'创建的
+//而是'maven'定义了一个rule,而后由我们自己创建的，关于rule，请看后面内容
+uploadArchives {
+    repositories{
+        mavenDeployer{
+
+//            pom.groupId = 'org.hzl.gradle-plugin'
+//            pom.artifactId = 'pluginDemo'
+//            pom.version = '1.0.0'
+
+            //文件发布到下面目录
+            //此处发布到本地maven仓库 ，如要发布到jcenter，方法相同。
+            repository(url: uri('../../maven release'))
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
